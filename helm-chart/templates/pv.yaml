@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: test-pv
-spec:
-  storageClassName: "csi-cinder-high-speed"
-  claimRef:
-    name: test-pvc
-    namespace: salquier

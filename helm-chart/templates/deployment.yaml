@@ -30,7 +30,7 @@ spec:
       volumes:
         - name: vol
           persistentVolumeClaim:
-            claimName: test-pv
+            claimName: test-pvc
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -39,7 +39,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           workingDir: /home/node/app
           command: ["npm"]
-          args: ["start:dev"]
+          args: ["run", "start:dev"]
           ports:
             - name: http
               containerPort: 3000
