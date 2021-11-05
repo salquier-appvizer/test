@@ -37,21 +37,21 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          workingDir: /home/node/app
+          workingDir: /home/node/app/test
           command: ["npm"]
           args: ["run", "start:dev"]
           ports:
             - name: http
               containerPort: 3000
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
+#          livenessProbe:
+#            httpGet:
+#              path: /
+#              port: http
+#          readinessProbe:
+#            httpGet:
+#              path: /
+#              port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
@@ -61,6 +61,14 @@ spec:
         - name: clone-source
           image: alpine/git
           command: ["git", "clone", "https://github.com/salquier-appvizer/test.git"]
+          workingDir: /home/node/app
+          volumeMounts:
+            - mountPath: "/home/node/app"
+              name: vol
+        - name: install
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          command: ["npm", "i"]
+          workingDir: /home/node/app/test
           volumeMounts:
             - mountPath: "/home/node/app"
               name: vol
